@@ -1,98 +1,98 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function WelcomeScreen() {
+  const router = useRouter();
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <SafeAreaView style={styles.container}>
+      {/* Logo / Brand Area */}
+      <View style={styles.logoContainer}>
+        <View style={styles.logoBox}>
+          <Text style={styles.logoText}>Logo</Text>
+        </View>
+        <Text style={styles.appName}>Chef's Menu Manager</Text>
+      </View>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      {/* Login Buttons matching Part 1 Design */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={styles.primaryButton} 
+          onPress={() => router.push('/chef')}
+        >
+          <Text style={styles.primaryButtonText}>Chef Login</Text>
+        </TouchableOpacity>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <TouchableOpacity 
+          style={styles.secondaryButton} 
+          onPress={() => alert('Employee view coming soon!')}
+        >
+          <Text style={styles.secondaryButtonText}>Employee Login</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'space-between',
+    padding: 24,
   },
-  safeArea: {
+  logoContainer: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    alignItems: 'center',
   },
-  title: {
-    textAlign: 'center',
+  logoBox: {
+    width: 200,
+    height: 150,
+    backgroundColor: '#e0e0e0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    marginBottom: 16,
   },
-  code: {
-    textTransform: 'uppercase',
+  logoText: {
+    fontSize: 18,
+    color: '#666',
+    fontWeight: '600',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  appName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  buttonContainer: {
+    width: '100%',
+    paddingBottom: 40,
+    gap: 16,
+  },
+  primaryButton: {
+    backgroundColor: '#6200ee',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  primaryButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#6200ee',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  secondaryButtonText: {
+    color: '#6200ee',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
